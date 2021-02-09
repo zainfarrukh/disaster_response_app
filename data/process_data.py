@@ -17,7 +17,7 @@ def load_data(messages_filepath, categories_filepath):
     -------
     DataFrame containing both merged files
     """
-    message = pd.read_csv(messages_filepath), 
+    messages = pd.read_csv(messages_filepath) 
     categories = pd.read_csv(categories_filepath)
     return pd.merge(left=messages, right=categories, on='id')
 

@@ -8,8 +8,6 @@ import nltk
 nltk.download(['punkt', 'wordnet'])
 
 import re
-import numpy as np
-import pandas as pd
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
@@ -17,9 +15,13 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import GridSearchCV
+
+import pickle
 
 
 def load_data(database_filepath):
@@ -39,7 +41,8 @@ def load_data(database_filepath):
     df = pd.read_sql_table('input_data', engine)
     X = df['message']
     y = df.drop(['id','message','original', 'genre'], axis=1).values
-    return X, y
+    label= df.drop(['id','message','original', 'genre'], axis=1).columns
+    return X, y, label
 
 
 
@@ -70,16 +73,21 @@ def tokenize(text):
 
 
 def build_model():
-    pass
+    model = Pipeline([('count', CountVectorizer(tokenizer=tokenize)), ('tfid', TfidfTransformer()), 
+                         ('cls', MultiOutputClassifier(RandomForestClassifier(min_samples_split=2)))])
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    pass
-
+    Y_pred_ = model.predict(X_test)
+    Y_pred_ = pd.DataFrame(Y_pred_, columns=category_names)
+    for i, var in enumerate(category_names):
+        print(var)
+        print (classification_report(Y_test[:,i], Y_pred_.iloc[:,i]))
 
 def save_model(model, model_filepath):
-    pass
-
+    pickle.dump(model,open(model_filepath, 'wb'))
+    
 
 def main():
     if len(sys.argv) == 3:
