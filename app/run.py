@@ -9,6 +9,7 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 app = Flask(__name__)
+
 def tokenize(text):
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
@@ -17,6 +18,7 @@ def tokenize(text):
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         clean_tokens.append(clean_tok)
     return clean_tokens
+
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql('SELECT * FROM input_data', engine)
@@ -38,9 +40,7 @@ def index():
     top_cats_df=(top_cats_df.sort_values(ascending=False)[0:10])
     top_cats_names = list(top_cats_df.index)
     top_cats_proportions = top_cats_df[0]
-    
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -49,7 +49,7 @@ def index():
                         name = 'Death Message Counts')
                     ],
             'layout': {
-                'title': 'Distribution of Messages by Genre and Death Flag',
+                'title': 'Distribution of Messages by Genre',
                 'yaxis': {
                     'title': "Count"
                 },
@@ -57,6 +57,41 @@ def index():
                     'title': "Genre"
                 },
                 'barmode': 'group'
+            }
+        },
+        {
+            'data': [
+                    Bar(x=list(df.groupby('genre').count()['death'].index),
+                        y=list(df.groupby('genre').count()['death'].values),
+                        name = 'Distribution of reported death in different genres')
+                    ],
+            'layout': {
+                'title': 'Distribution of Reported Death in Different Genres',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                },
+                'barmode': 'group'
+            }
+        },
+        {
+            'data': [
+                    Bar(x=['Death Related','Not Death Related'],
+                        y=[df[df['death'] == 1].groupby('death').count()['message'][1],
+                               df[df['death']==0].groupby('death').count()['message'][0]],
+                        name = 'Death VS non-death Message')
+                    ],
+            'layout': {
+                'title': 'Death VS NoN-Death Message',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Nature of the Message"
+                },
+                'barmode': 'stack'
             }
         },
         {
