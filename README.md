@@ -62,7 +62,7 @@ Files are arranged in following way:<br/>
 2. Run the following command in the app's directory to run your web app.
     `python run.py`
 
-3. Go to http://0.0.0.0:3001/
+3. Go to http://0.0.0.0:3001/ or link of wherever the file app is deployed
 
 #### 6. Software Requirements
 This project uses Python 3.6.3 and the necessary libraries are mentioned in requirements.txt. The standard libraries which are not mentioned in requirements.txt are json, operator, pickle, pprint, re, and sys.
