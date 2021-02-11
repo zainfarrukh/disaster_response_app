@@ -31,7 +31,7 @@ The Web App includes some of the visualizations of the training data and include
 
 #### 4. Files
 
-Files are arranged in following way:
+Files are arranged in following way:<br/>
 --App<br/>
 ----run.py <--RUNS THE MAIN APP<br/>
 ----templates <br/>
