@@ -73,12 +73,14 @@ def tokenize(text):
 
 
 def build_model():
+    """Creating ML Pipeline"""
     model = Pipeline([('count', CountVectorizer(tokenizer=tokenize)), ('tfid', TfidfTransformer()), 
                          ('cls', MultiOutputClassifier(RandomForestClassifier(min_samples_split=2)))])
     return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Prints classification report to evaluate the model"""
     Y_pred_ = model.predict(X_test)
     Y_pred_ = pd.DataFrame(Y_pred_, columns=category_names)
     for i, var in enumerate(category_names):
@@ -86,12 +88,13 @@ def evaluate_model(model, X_test, Y_test, category_names):
         print (classification_report(Y_test[:,i], Y_pred_.iloc[:,i]))
 
 def save_model(model, model_filepath):
+    """Saves the model in a pickle file"""
     pickle.dump(model,open(model_filepath, 'wb'))
     
 
 def main():
     if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]
+        database_filepath, model_filepath = sys.argv[1:] #Gets files path
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
