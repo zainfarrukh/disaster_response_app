@@ -32,33 +32,32 @@ The Web App includes some of the visualizations of the training data and include
 #### 4. Files
 
 Files are arranged in following way:
---App
-----run.py <--RUNS THE MAIN APP
-----templates 
-------go.html <--CLASSIFICATION RESULT PAGE OF WEB APP
-------master.html <--MAIN PAGE OF WEB APP
---Data
-----DisasterResponse.db <--DATABASE TO SAVED CLEANED DATA
-----disaster_categories.csv <--DATA TO PROCESS
-----disaster_messages.csv <--DATA TO PROCESS
-----process.py <--SCRIPT TO PERFORM ETL PROCESS
---Model
-----train_classifier <--PERFORMS CLASSIFICATION TASKS
+--App<br/>
+----run.py <--RUNS THE MAIN APP<br/>
+----templates <br/>
+------go.html <--CLASSIFICATION RESULT PAGE OF WEB APP<br/>
+------master.html <--MAIN PAGE OF WEB APP<br/>
+--Data<br/>
+----DisasterResponse.db <--DATABASE TO SAVED CLEANED DATA<br/>
+----disaster_categories.csv <--DATA TO PROCESS<br/>
+----disaster_messages.csv <--DATA TO PROCESS<br/>
+----process.py <--SCRIPT TO PERFORM ETL PROCESS<br/><br/>
+--Model<br/>
+----train_classifier <--PERFORMS CLASSIFICATION TASKS<br/>
 
 #### 5. How to run the App
 
 1. Run the following commands in the project's root directory to set up your database and model.
 
     - To run ETL pipeline that cleans data and stores in database
-        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`<br/>
         The first two arguments are input data and the third argument is the SQLite Database in which we want to save the cleaned data. The ETL pipeline is in      process_data.py.
-        DisasterResponse.db already exists in data folder but the above command will still run and replace the file with same information.
+        DisasterResponse.db already exists in data folder but the above command will still run and replace the file with same information.<br/>
 
     - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`<br/>
         This will use cleaned data to train the model, improve the model with grid search and saved the model to a pickle file (classifer.pkl).
-
-classifier.pkl already exists but the above command will still run and replace the file will same information.
+        classifier.pkl already exists but the above command will still run and replace the file will same information.
 
 2. Run the following command in the app's directory to run your web app.
     `python run.py`
