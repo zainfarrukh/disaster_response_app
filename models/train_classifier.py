@@ -75,8 +75,13 @@ def tokenize(text):
 def build_model():
     """Creating ML Pipeline"""
     model = Pipeline([('count', CountVectorizer(tokenizer=tokenize)), ('tfid', TfidfTransformer()), 
-                         ('cls', MultiOutputClassifier(RandomForestClassifier(min_samples_split=2)))])
-    return model
+                      ('cls', MultiOutputClassifier(RandomForestClassifier()))])
+    parameters = {
+        'cls__estimator__max_depth': [10, None],
+        'cls__estimator__min_samples_leaf': [1, 8]}
+    cvmodel = GridSearchCV(estimator = model, param_grid = parameters, 
+                          cv = 5, n_jobs = -1, verbose = 2)
+    return cvmodel
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
